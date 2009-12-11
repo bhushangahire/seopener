@@ -6,6 +6,6 @@ SEOpener is a rails plugin that provides web search ranking statistics and monit
 It provides a set of models, views, and controllers that allow you to define search terms that you care about, and then scrape the Google search results for these terms, looking for the position and PageRank of your domain.  It also collects estimated CPC and traffic statistics using a Yahoo API.
 
 
-This plugin was developed by Joshua Krall at [http://transfs.com](TransFS.com), and released to the community as an open-source project.  More info can be found at the [http://transfs.com/devblog](TransFS.com Development Blog).
+This plugin was developed by Joshua Krall at [TransFS.com](http://transfs.com), and released to the community as an open-source project.  More info can be found at the [TransFS.com Development Blog](http://transfs.com/devblog).
 
 Copyright (c) 2009 TransFS.com, released under the MIT license
