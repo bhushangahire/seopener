@@ -61,8 +61,11 @@ To hook up your own background processing engine, you will need to subclass the 
 
     Seo::Config.background_worker = :my_custom_worker
 
+For an example of using SEOpener with Workling, see the Seo::WorklingWorker class.  It is designed to work with an SeoWorker Workling class, that contains most of the updating logic from Seo::GenericWorker.
+
 This will get you to a working setup that allows you to run background-processed queries via a "Query!" link in the SEO interface.  In addition, you can invoke the complete updating of your SEO Terms by running the "carefully_update_seo_terms" method via a regularly schedule cron job.  This method queries some of the Google/Yahoo endpoints that require less-regular updating so that they return valid data.  It is recommended that this method be run every 10 minutes or so, and as such, it will often take a day or more to completely cycle through updating all of your terms.
 
+--------------
 
 
 
