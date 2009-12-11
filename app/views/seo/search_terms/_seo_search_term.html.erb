@@ -1,0 +1,20 @@
+  <tr class='admin_table_padded' id='seo_<%= seo_search_term.id %>'>
+    <td style='width: 200px;'><%= link_to(seo_search_term.term, seo_search_term_path(seo_search_term)) %></td>
+    <%= seo_cells(seo_search_term, :my_domain_position, true)%>
+	 <td><!-- spacer --></td>
+    <td style='width: 40px; text-align: center;'><%= seo_search_term.avg_my_domain_position ? number_with_precision(seo_search_term.avg_my_domain_position,:precision => 1) : '-' %></td>
+	 <%= seo_data_cell(seo_search_term.my_domain_rank)%>
+	 <%= seo_data_cell(seo_search_term.top_rank)%>
+	 <%= seo_data_cell(seo_search_term.top_domain_rank)%>
+	 <td><!-- spacer --></td>
+	 <%= yahoo_numeric_cell(seo_search_term.yahoo_impressions)%>
+	 <%= yahoo_numeric_cell(seo_search_term.yahoo_clicks)%>
+	 <%= yahoo_currency_cell(seo_search_term.yahoo_maxcpc)%>	 	 
+    <td><%= seo_search_term.last_query_date.nil? ? '-' : seo_search_term.last_query_date.to_formatted_s(:short) %></td>	 
+	 <% unless @rss %>
+	 <td><%= link_to_remote 'Query!', {:url => query_seo_search_term_path(seo_search_term)} %></td>
+    <td><%= link_to 'Show', seo_search_term %></td>
+    <td><%= link_to 'Edit', edit_seo_search_term_path(seo_search_term) %></td>
+    <td><%= link_to 'Destroy', seo_search_term, :confirm => 'Are you sure?', :method => :delete %></td>
+	 <% end %>
+  </tr>

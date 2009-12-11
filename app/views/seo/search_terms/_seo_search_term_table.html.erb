@@ -1,0 +1,42 @@
+<table class='admin_table'>
+  <tr class='admin_table_headerinfo'>
+    <th></th>
+    <th colspan='2'></th>
+	 <th><!-- spacer --></th>
+    <th colspan="1" style="text-align: center; border-left: 1px solid #000; border-right: 1px solid #000;">10-Day Average</th>
+    <th colspan='1' style="text-align: center; line-height:10px;"><span style='color: #ACACAC; font-size: 8px;'>(higher is better)</span></th>
+    <th colspan='1' style="text-align: center; line-height:10px;"><span style='color: #ACACAC; font-size: 8px;'>(rank of top listing)</span></th>
+    <th colspan='1' style="text-align: center; line-height:10px;"><span style='color: #ACACAC; font-size: 8px;'>(rank of top domain)</span></th>
+	 <th><!-- spacer --></th>
+    <th colspan="3" style="text-align: center; border-left: 1px solid #000; border-right: 1px solid #000;">Yahoo Ads</th>
+    <th></th>
+	 <% unless @rss %>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+	 <% end %>
+  </tr>
+  <tr class='admin_table_header'>
+    <th><%=link_to 'Term', seo_search_terms_path(:sort_column=>'term', :sort_order=>@sort_order)%></th>
+    <th colspan='2' style="text-align: center;"><%=link_to 'My Domain Position', seo_search_terms_path(:sort_column=>'my_domain_position', :sort_order=>@sort_order)%><br/><span style='color: #ACACAC; font-size: 8px;'>(lower is better)</span></th>
+	 <th style="width: 5px;"><!-- spacer --></th>
+    <th style="text-align: center;"><%=link_to 'My Domain Position', seo_search_terms_path(:sort_column=>'avg_my_domain_position', :sort_order=>@sort_order)%></th>
+    <th colspan='1' style="text-align: center; width: 40px;"><%=link_to 'My Domain Rank', seo_search_terms_path(:sort_column=>'my_domain_rank', :sort_order=>@sort_order)%></th>
+    <th colspan='1' style="text-align: center; width: 40px;"><%=link_to 'Top Rank', seo_search_terms_path(:sort_column=>'top_rank', :sort_order=>@sort_order)%></th>
+    <th colspan='1' style="text-align: center; width: 40px;"><%=link_to 'Top Domain Rank', seo_search_terms_path(:sort_column=>'top_domain_rank', :sort_order=>@sort_order)%></th>
+	 <th style="width: 5px;"><!-- spacer --></th>
+    <th style="text-align: center; width: 40px;"><%=link_to 'Impressions', seo_search_terms_path(:sort_column=>'yahoo_impressions', :sort_order=>@sort_order)%></th>
+    <th style="text-align: center; width: 40px;"><%=link_to 'Clicks', seo_search_terms_path(:sort_column=>'yahoo_clicks', :sort_order=>@sort_order)%></th>
+    <th style="text-align: center; width: 40px;"><%=link_to 'Max CPC', seo_search_terms_path(:sort_column=>'yahoo_maxcpc', :sort_order=>@sort_order)%></th>
+    <th>Last Update</th>
+	 <% unless @rss %>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+	 <% end %>
+  </tr>
+
+	<%= render :partial => 'seo_search_term.html.erb', :collection=>@seo_search_terms %>
+</table>

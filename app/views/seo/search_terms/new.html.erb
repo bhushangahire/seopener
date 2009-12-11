@@ -1,0 +1,14 @@
+<h1>New seo_search_term</h1>
+
+<% form_for(@seo_search_term) do |f| %>
+  <%= f.error_messages %>
+  <p>
+    <%= f.label :term %><br />
+    <%= f.text_field :term %>
+  </p>
+  <p>
+    <%= f.submit "Create" %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', seo_search_terms_path %>
