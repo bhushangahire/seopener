@@ -10,7 +10,7 @@ module Seo
     @@my_site_name = 'My Site'
     cattr_accessor :my_site_name
 
-    @@background_worker = :generic_worker
+    @@background_worker = :naive_worker
     cattr_accessor :background_worker
     def self.background_worker_class
       "Seo::#{@@background_worker.to_s.classify}".constantize
