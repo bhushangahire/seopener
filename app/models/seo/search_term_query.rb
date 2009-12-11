@@ -1,7 +1,7 @@
 class Seo::SearchTermQuery < ActiveRecord::Base
   set_table_name :seo_search_term_queries
   has_many :results, :class_name=>'Seo::Result', :foreign_key=>'seo_search_term_query_id', :dependent=>:destroy
-  belongs_to :my_result, :class_name=>'Seo::Result'
+  belongs_to :my_domain_result, :class_name=>'Seo::Result'
   belongs_to :search_term, :class_name=>'Seo::SearchTerm', :foreign_key=>'seo_search_term_id'
 
   named_scope :chronological, :order=>'created_at DESC'
@@ -27,7 +27,7 @@ class Seo::SearchTermQuery < ActiveRecord::Base
 
     # go through the results and look for transfs.com
     my_domain = self.results.ordered.is_my_domain.first
-    if not transfs.nil?
+    if not my_domain.nil?
       self.my_domain_position = my_domain.position
       self.my_domain_result = my_domain
     end
@@ -43,12 +43,36 @@ class Seo::SearchTermQuery < ActiveRecord::Base
       r = Seo::Result.create( :title => result.titleNoFormatting,
                               :content => result.content,
                               :url => result.unescapedUrl,
-                              :domain_url => result.visibleUrl,
+                              :domain_url => result.visibleUrl[/\w+\.\w+$/],
                               :position => position+1
                             )
       results << r
 
       @callback_block.call( (position+1).to_f/64.0*100.0 ) if @callback_block
   end
+
+  def to_csv(options={})
+    output = ''
+    results.each do |result|
+      data = [
+  			result.position,
+        result.url,
+        result.title,
+        result.domain_url,
+      ]
+      output += FasterCSV.generate_line(data, options)
+    end
+    output
+  end
+
+  def to_csv_headers(options={})
+    [
+			'position',
+      'url',
+      'title',
+      'domain_url',
+    ]
+  end
+
 
 end

@@ -1,34 +1,46 @@
-<p>
-  <b>Term:</b>
-  <%=h @seo_search_term.term %>
-</p>
+<%- content_for(:seopener_head) do -%>
+	<%= stylesheet_link_tag 'seopener' %>
+	<%= javascript_include_tag :defaults %>
+<%- end -%>
 
-<p>
-	<b>TransFS Result</b><br />
-<% unless @seo_search_term.my_domain_position.nil? %>
-<% 	result = @seo_search_term.search_term_queries.recent.first.results[@seo_search_term.my_domain_position - 1] %>
-	Position:&nbsp;&nbsp;<%=result.position%>&nbsp;&nbsp;-&nbsp;&nbsp;<%=link_to result.url, result.url%><br />
-<% else %>
-	TransFS does not list for this term in the top 64 entries.
-<% end %>
-</p>
+<div class='search_term' id='seopener'>
+	<p>
+	  <b>Term:</b>
+	  <%=h @seo_search_term.term %>
+	</p>
 
-<table class='admin_table'>
-	<tr class='admin_table_header'>
-		<th>#</th>
-		<th>url</th>
-		<th>title</th>
-		<th>domain</th>
-	</tr>
+	<p>
+		<b><%=Seo::Config.my_site_name%> Result</b><br />
+	<% unless @seo_search_term.my_domain_position.nil? %>
+	<% 	result = @seo_search_term.search_term_queries.recent.first.results[@seo_search_term.my_domain_position - 1] %>
+		Position:&nbsp;&nbsp;<%=result.position%>&nbsp;&nbsp;-&nbsp;&nbsp;<%=link_to result.url, result.url%><br />
+	<% else %>
+		<%=Seo::Config.my_site_name%> does not list for this term in the top 64 entries.
+	<% end %>
+	</p>
+
+	<table class='left'>
+		<tr>
+			<th>#</th>
+			<th>url</th>
+			<th>title</th>
+			<th>domain</th>
+		</tr>
 	<% @seo_search_term.search_term_queries.recent.first.results.each_with_index do |result, i| %>
-		<tr class='admin_table <%= "green" if !@seo_search_term.my_domain_position.nil? and i==(@seo_search_term.my_domain_position - 1)%>'>
+		<tr class='<%= "green" if !@seo_search_term.my_domain_position.nil? and i==(@seo_search_term.my_domain_position - 1)%>'>
 			<td><%= result.position%></td>
 			<td><%= link_to result.url[0..50], result.url %></td>
 			<td><%= result.title[0..30]%></td>
 			<td><%= link_to result.domain_url, result.domain_url %></td>
 		</tr>
 	<% end %>
-</table>
+	</table>
 
-<%= link_to 'Edit', edit_seo_search_term_path(@seo_search_term) %> |
-<%= link_to 'Back', seo_search_terms_path %>
+	<p>
+		<%= link_to 'Download as CSV', seo_search_term_path(@seo_search_term, :format=>'csv') %>
+	</p>
+	<p>
+		<%= link_to 'Edit', edit_seo_search_term_path(@seo_search_term) %> |
+		<%= link_to 'Back', seo_search_terms_path %>
+	</p>
+</div>

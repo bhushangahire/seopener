@@ -1,15 +1,22 @@
-<h1>Editing seo_search_term</h1>
+<%- content_for(:seopener_head) do -%>
+	<%= stylesheet_link_tag 'seopener' %>
+	<%= javascript_include_tag :defaults %>
+<%- end -%>
 
-<% form_for(@seo_search_term) do |f| %>
-  <%= f.error_messages %>
-  <p>
-    <%= f.label :term %><br />
-    <%= f.text_field :term %>
-  </p>
-  <p>
-    <%= f.submit "Update" %>
-  </p>
-<% end %>
+<div class='search_term' id='seopener'>
+	<h1>Editing SEO Search Term</h1>
 
-<%= link_to 'Show', @seo_search_term %> |
-<%= link_to 'Back', seo_search_terms_path %>
+	<% form_for(@seo_search_term) do |f| %>
+		<%= f.error_messages %>
+		<p>
+			<%= f.label :term %><br />
+			<%= f.text_field :term %>
+		</p>
+		<p>
+			<%= f.submit "Update" %>
+		</p>
+	<% end %>
+
+	<%= link_to 'Show', @seo_search_term %> |
+	<%= link_to 'Back', seo_search_terms_path %>
+</div>

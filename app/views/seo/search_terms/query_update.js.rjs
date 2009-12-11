@@ -1,12 +1,12 @@
 if not @progress.nil?
 
   page.replace_html "seo_progress_#{@seo_search_term.id}", number_to_percentage(@progress, :precision=>0)
-  
-  if (@progress > 99) 
-    
+
+  if (@progress > 99)
+
     page << "progress_updater_#{@seo_search_term.id}.stop();"
-    page.replace "seo_#{@seo_search_term.id}", render(:partial=>'seo/search_terms/seo_search_term')
-    
+    page.replace "seo_#{@seo_search_term.id}", render('seo/search_terms/seo_search_term', :seo_search_term=>@seo_search_term, :seo_search_term_counter=>0)
+
   end
-                                    
+
 end

@@ -1,6 +1,6 @@
 
 html = ''
-html += "<tr class='admin_table' id='seo_#{@seo_search_term.id}'>\n"
+html += "<tr id='seo_#{@seo_search_term.id}'>\n"
 html += "<td>#{@seo_search_term.term}</td>\n"
 html += "<td style='text-align: right;'>\n"
 html += "   <img src='/images/ajax-loader.gif' width='15' />&nbsp;&nbsp;&nbsp;\n"
@@ -11,10 +11,9 @@ html += "<td colspan='9' id='seo_progress_#{@seo_search_term.id}' style='text-al
 html += "</td>\n"
 html += "</tr>\n"
 
-html += periodically_call_remote( :url=>query_update_seo_search_term_path(@seo_search_term), 
+html += periodically_call_remote( :url=>query_update_seo_search_term_path(@seo_search_term),
                                   :variable=>"progress_updater_#{@seo_search_term.id}",
                                   :frequency => 5
                                 )
-                                  
+
 page.replace "seo_#{@seo_search_term.id}", html
-                                  

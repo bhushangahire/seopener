@@ -1,15 +1,4 @@
 class Seo::SearchTermsController < ApplicationController
-  before_filter :login_required, :except=>[:index]
-  permit 'admin', :permission_denied_message => 'Permission Denied.', :except=>[:index]
-  ssl_required :show, :new, :edit, :create, :update, :destroy, :query_update, :query
-  ssl_allowed :index
-
-  layout 'admin'
-
-  def setup_includes
-    super
-    init_includes :admin
-  end
 
   # GET /seo_search_terms
   # GET /seo_search_terms.xml
@@ -28,13 +17,11 @@ class Seo::SearchTermsController < ApplicationController
     end
 
     respond_to do |format|
-      format.html do
-        return if not login_required
-        if permit?('admin')
-          render # index.html.erb
-        else
-          redirect_to '/'; return
-        end
+      format.html { render }
+      format.csv do
+        send_data(@seo_search_terms.to_a.to_csv,
+                  :type => 'text/csv; charset=utf-8; header=present',
+                  :filename => "seo_search_terms.csv") and return
       end
       #format.xml  { render :xml => @seo_search_terms }
       format.atom do
@@ -56,6 +43,11 @@ class Seo::SearchTermsController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
+      format.csv do
+        send_data(@seo_search_term.search_term_queries.recent.first.to_csv,
+                  :type => 'text/csv; charset=utf-8; header=present',
+                  :filename => "#{@seo_search_term.term}-results.csv") and return
+      end
       format.xml  { render :xml => @seo_search_term }
     end
   end
@@ -79,15 +71,25 @@ class Seo::SearchTermsController < ApplicationController
   # POST /seo_search_terms
   # POST /seo_search_terms.xml
   def create
-    params[:seo_search_term][:term] = params[:seo_search_term][:term].strip unless params[:seo_search_term][:term].nil?
-    @seo_search_term = Seo::SearchTerm.find_by_term(params[:seo_search_term][:term])
-    @seo_search_term = Seo::SearchTerm.new(params[:seo_search_term]) if @seo_search_term.nil?
+    if params[:search_term_csv_file].blank?
+      @seo_search_term = Seo::SearchTerm.find_by_term(params[:seo_search_term][:term].strip)
+      @seo_search_term = Seo::SearchTerm.new(params[:seo_search_term]) if @seo_search_term.nil?
+    else
+      terms = params[:search_term_csv_file].read.split(/\n/).collect {|t| t.strip}
+      @seo_search_terms = []
+      terms.each do |term|
+        @seo_search_terms << Seo::SearchTerm.find_or_create_by_term(term)
+      end
+    end
 
     respond_to do |format|
-      if @seo_search_term.save
+      if @seo_search_terms or @seo_search_term.save
         flash[:notice] = 'Seo::SearchTerm was successfully created.'
         format.html { redirect_to seo_search_terms_path }
-        format.xml  { render :xml => @seo_search_term, :status => :created, :location => @seo_search_term }
+        format.xml  do
+          render :xml => @seo_search_terms, :status => :created, :location => @seo_search_terms and return if @seo_search_terms
+          render :xml => @seo_search_term, :status => :created, :location => @seo_search_term and return
+        end
       else
         format.html { render :action => "new" }
         format.xml  { render :xml => @seo_search_term.errors, :status => :unprocessable_entity }
@@ -128,8 +130,8 @@ class Seo::SearchTermsController < ApplicationController
   def query
     @seo_search_term = Seo::SearchTerm.find(params[:id])
     if not @seo_search_term.nil?
-      Workling.return.set("seo_#{@seo_search_term.id}_progress", 0.0)
-      SeoWorker.async_run_seo_queries(:search_term_id => @seo_search_term.id)
+      Seo::Config.background_worker_cache.set("seo_#{@seo_search_term.id}_progress", 0.0)
+      Seo::Config.background_worker_class.run_seo_queries(:search_term_id => @seo_search_term.id)
     end
     respond_to do |format|
       format.js { render }
@@ -141,12 +143,34 @@ class Seo::SearchTermsController < ApplicationController
   def query_update
     @seo_search_term = Seo::SearchTerm.find(params[:id])
     if not @seo_search_term.nil?
-      cache = Workling.return.get("seo_#{@seo_search_term.id}_progress")
+      cache = Seo::Config.background_worker_cache.get("seo_#{@seo_search_term.id}_progress")
       @progress = cache if not cache.nil?
     end
     respond_to do |format|
       format.js { render }
     end
+  end
+
+  private
+
+  # RSS authentication method
+  # Here we check that the random key param was passed in, as well as doing some basic auth
+  AdminRssKey = 'secretrsskey' unless defined?(AdminRssKey)
+  def rss_authentication
+    if params[:key] != AdminRssKey
+      redirect_to '/'
+      return false
+    end
+
+    if user = authenticate_with_http_basic do |username, pass|
+        username=='rss' and pass=='rss-password'
+      end
+    else
+      request_http_basic_authentication
+      return false
+    end
+
+    return true
   end
 
 end

@@ -1,14 +1,30 @@
-<h1>New seo_search_term</h1>
+<%- content_for(:seopener_head) do -%>
+	<%= stylesheet_link_tag 'seopener' %>
+	<%= javascript_include_tag :defaults %>
+<%- end -%>
 
-<% form_for(@seo_search_term) do |f| %>
-  <%= f.error_messages %>
-  <p>
-    <%= f.label :term %><br />
-    <%= f.text_field :term %>
-  </p>
-  <p>
-    <%= f.submit "Create" %>
-  </p>
-<% end %>
+<div class='search_term' id='seopener'>
+	<h1>New SEO Search Term</h1>
 
-<%= link_to 'Back', seo_search_terms_path %>
+	<h2>Add a Single Term</h2>
+	<% form_for(@seo_search_term) do |f| %>
+	  <%= f.error_messages %>
+	  <p>
+	    <%= f.label :term %><br />
+	    <%= f.text_field :term %>
+	  </p>
+	  <p>
+	    <%= f.submit "Create" %>
+	  </p>
+	<% end %>
+
+	<p><i> - OR - </i></p>
+
+	<h2>Upload a CSV file with multiple terms (the file should have one term per line)</h2>
+	<% form_tag seo_search_terms_path, :multipart => true do |f| %>
+		<%= file_field_tag 'search_term_csv_file' %><br />
+		<%= submit_tag 'Upload this CSV' %>
+	<% end %>
+
+	<%= link_to 'Back', seo_search_terms_path %>
+</div>

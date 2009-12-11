@@ -1,0 +1,66 @@
+
+#seopener {
+  font-family: Verdana, 'Helvetica Neu', Arial;
+  font-size: 10px;
+}
+
+#seopener table {
+  border-collapse: collapse;
+  width: 100%;
+  vertical-align: middle;
+}
+
+#seopener th {
+  border-bottom: 1px solid #888;
+}
+
+#seopener .descriptions th {
+  vertical-align: bottom;
+  border-bottom: none;
+}
+
+#seopener .descriptions th.domain_avg {
+  border-left: 1px solid #888;
+  border-right: 1px solid #888;
+}
+#seopener .descriptions th.yahoo {
+  border-left: 1px solid #888;
+  border-right: 1px solid #888;
+}
+
+#seopener .small {
+  font-size: 0.85em;
+  line-height: 1.2em;
+  color: #ACACAC;
+}
+
+#seopener td {
+  text-align: center;
+  padding: 3px 5px;
+}
+
+#seopener .alt_row td {
+  background-color: #EEE;
+}
+
+#seopener .term {
+  text-align: left;
+}
+#seopener td.domain_position_chart {
+  width: 50px;
+  height: 25px;
+}
+#seopener td.domain_position { width: 40px; }
+#seopener td.domain_avg { width: 40px; }
+#seopener td.domain_rank { width: 40px; }
+#seopener td.top_domain { width: 40px; }
+#seopener td.top_domain_rank { width: 40px; }
+
+
+#seopener .left td, #seopener .left th {
+  text-align: left;
+}
+
+/*#seopener td.gray { background-color: #DDDDDD; }*/
+#seopener .green { background-color: #88DD88; }
+#seopener .red { background-color: #DD8888; }

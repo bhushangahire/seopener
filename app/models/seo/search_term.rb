@@ -17,6 +17,11 @@ class Seo::SearchTerm < ActiveRecord::Base
 
   AVG_DAYS = 10
 
+  before_validation :normalize_fields
+  def normalize_fields
+    term_before_type_cast.to_s.strip! if term_before_type_cast
+  end
+
   def query!(&callback_block)
     query = self.search_term_queries.create
     query.process!(&callback_block)
@@ -67,5 +72,44 @@ class Seo::SearchTerm < ActiveRecord::Base
     self.careful_update_index = (self.careful_update_index + 1) % 4
     self.save
   end
+
+
+  def to_csv(options={})
+    data = [
+  		term,
+  		my_domain_position,
+  		avg_my_domain_position,
+      my_domain_rank,
+      top_rank,
+      top_domain_rank,
+      yahoo_impressions.first,
+      yahoo_impressions.last,
+      yahoo_clicks.first,
+      yahoo_clicks.last,
+      yahoo_maxcpc.first,
+      yahoo_maxcpc.last,
+      last_query_date
+    ]
+    FasterCSV.generate_line(data, options)
+  end
+
+  def to_csv_headers(options={})
+    [
+  		'term',
+  		'my domain position',
+  		'avg my domain position',
+      'my domain rank',
+      'top rank',
+      'top domain rank',
+      'yahoo impressions low',
+      'yahoo impressions high',
+      'yahoo clicks low',
+      'yahoo clicks high',
+      'yahoo maxcpc low',
+      'yahoo maxcpc high',
+      'last query date'
+    ]
+  end
+
 
 end
