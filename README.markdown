@@ -5,6 +5,8 @@ SEOpener is a rails plugin that provides web search ranking statistics and monit
 
 It provides a set of models, views, and controllers that allow you to define search terms that you care about, and then scrape the Google search results for these terms, looking for the position and PageRank of your domain.  It also collects estimated CPC and traffic statistics using a Yahoo API.
 
+![screenshot](http://github.com/jkrall/seopener/blob/master/doc/screenshot.png "SEOpener Screenshot")
+
 
 Dependencies
 ========
