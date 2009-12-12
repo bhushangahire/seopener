@@ -19,11 +19,11 @@ module Seo::SearchTermsHelper
     return ''
   end
 
-  def seo_up_or_down_class(search_term, attr)
+  def seo_up_or_down_class(search_term, attr, reverse=false)
     avg_attr = ('avg_'+attr.to_s).to_sym
     val = search_term.send(attr)
     avg_val = search_term.send(avg_attr)
-    up_or_down = up_down_or_level(val, avg_val)
+    up_or_down = up_down_or_level(val, avg_val, reverse)
     seo_up_or_down_classname(up_or_down)
   end
 

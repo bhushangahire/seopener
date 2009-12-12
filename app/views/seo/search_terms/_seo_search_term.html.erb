@@ -2,7 +2,7 @@
 		<td class='term'><%= link_to(seo_search_term.term, seo_search_term_path(seo_search_term)) %></td>
 
 		<td class='domain_position_chart'><%= seo_chart_html(seo_search_term, :my_domain_position, true) %></td>
-		<td class='domain_position <%=seo_up_or_down_class(seo_search_term, :my_domain_position)%>'><%= seo_search_term.my_domain_position || '-' %></td>
+		<td class='domain_position <%=seo_up_or_down_class(seo_search_term, :my_domain_position, true)%>'><%= seo_search_term.my_domain_position || '-' %></td>
 		<td class='spacer'><!-- spacer --></td>
 		<td class='domain_avg'><%= seo_search_term.avg_my_domain_position ? number_with_precision(seo_search_term.avg_my_domain_position,:precision => 1) : '-' %></td>
 		<td class='domain_rank'><%= seo_search_term.my_domain_rank || '-' %></td>
