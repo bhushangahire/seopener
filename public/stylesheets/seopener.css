@@ -48,7 +48,11 @@
 }
 #seopener td.domain_position_chart {
   width: 50px;
-  height: 25px;
+  height: 30px;
+}
+#seopener td.domain_position_chart img {
+  position: relative;
+  top: 3px;
 }
 #seopener td.domain_position { width: 40px; }
 #seopener td.domain_avg { width: 40px; }

@@ -52,12 +52,13 @@ module Seo::SearchTermsHelper
                     [
                     "chs=50x15",
                     "chco=#{color}",
+                    "chf=bg,s,FFFFFF00",
                     "cht=ls",
                     "chd=t:#{sparkline_data.collect{|d| d.to_s}.join(',')}",
                     "chds=#{minmax[0]},#{minmax[1]}",
                     "chls=3,1,0"
                     ].join('&')
-      image_tag image_src, :alt=>"#{attr} Trendline", :style=>"position: relative; top: 5px; margin-top: -10px;"
+      image_tag image_src, :alt=>"#{attr} Trendline"
     else
       ''
     end
