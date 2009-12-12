@@ -50,6 +50,34 @@ In addition, you will need to tell SEOpener the domain and name of your site:
     Seo::Config.my_domain = 'transfs.com'
     Seo::Config.my_site_name = 'TransFS'
 
+Finally, you will need to uncomment the routes defined in the plugin's config/routes.rb file, or copy them to your application's config.rb.  You may want to override these routes, and direct them to your own "secure" subclasses of the SEOpener controller:
+
+    map.namespace :seo do |seo|
+      seo.resources :search_terms, :member=>{:query=>:post, :query_update=>:post}, :controller=>'SecureSearchTerms'
+    end
+
+In this case, your SecureSearchTerms controller might look like:
+
+    class Seo::SecureSearchTermsController < Seo::SearchTermsController
+      before_filter :login_required, :except=>[:index]
+      permit 'admin', :permission_denied_message => 'Permission Denied.', :except=>[:index]
+      ssl_required :show, :new, :edit, :create, :update, :destroy, :query_update, :query
+      ssl_allowed :index
+
+      layout 'admin'
+
+      # This lets us inherit the seopener controller, but still find its views properly
+      def controller_path
+        self.class.controller_path
+      end
+      def self.controller_path
+        @controller_path ||= 'seo/search_terms'
+      end
+
+    end
+
+
+
 
 Background Processing of SEO Queries
 ==========
