@@ -1,22 +1,34 @@
 module Seo
   class Config
 
-    @@my_domains = [ 'seopener.com' ]
-    cattr_accessor :my_domains
-    def self.my_domain=(domain_or_domains)
-      @@my_domains = [domain_or_domains].flatten
+    class SettingsStruct < OpenStruct
+      def [](k)
+        self.send(k)
+      end
+      def []=(k, v)
+        self.send("#{k}=", v)
+      end
     end
 
-    @@my_site_name = 'My Site'
-    cattr_accessor :my_site_name
+    @@settings = SettingsStruct.new YAML.load_file(File.join(RAILS_ROOT, 'config', 'seopener.yml'))
 
-    @@background_worker = :naive_worker
-    cattr_accessor :background_worker
+    def self.my_domains
+      @@settings[:my_domains] ||= []
+      ([@@settings[:my_domain]] + @@settings[:my_domains]).uniq.delete_if {|d| d.nil?}
+    end
+
     def self.background_worker_class
-      "Seo::#{@@background_worker.to_s.classify}".constantize
+      "Seo::#{@@settings[:background_worker].to_s.classify}".constantize
     end
     def self.background_worker_cache
-      "Seo::#{@@background_worker.to_s.classify}::Cache".constantize
+      "Seo::#{@@settings[:background_worker].to_s.classify}::Cache".constantize
+    end
+
+    def self.method_missing(method, *args)
+      if @@settings.respond_to?(method)
+        return @@settings.send(method, args)
+      end
+      super
     end
 
   end

@@ -1,0 +1,3 @@
+background_worker: :naive_worker
+my_domain: seopener.com
+my_site_name: SEOpener

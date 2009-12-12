@@ -1,9 +1,8 @@
 namespace :seopener do
   desc 'Copy migration files into main app'
-  task :setup => :environment do
+  task :setup do
     dest = "#{RAILS_ROOT}/db/migrate"
     FileUtils.mkdir_p(dest)
-
     src = Dir.glob(File.dirname(__FILE__) + "/../db/migrate/*.rb")
     puts "Copying migrations to #{dest}"
     FileUtils.cp(src, dest)
@@ -11,6 +10,11 @@ namespace :seopener do
     dest = "#{RAILS_ROOT}/public"
     src = Dir.glob(File.dirname(__FILE__) + "/../public/*")
     puts "Copying assets to #{dest}"
+    FileUtils.cp_r(src, dest)
+
+    dest = "#{RAILS_ROOT}/config"
+    src = Dir.glob(File.dirname(__FILE__) + "/../config/seopener.yml")
+    puts "Copying configurating file to #{dest}"
     FileUtils.cp_r(src, dest)
   end
 

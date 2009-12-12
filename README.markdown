@@ -45,10 +45,11 @@ First, you will need to set your Google AJAX API key:
     GoogleAjax.api_key = 'abcdefghijklmnop...'
     GoogleAjax.referer = 'http://mysite.com'
 
-In addition, you will need to tell SEOpener the domain and name of your site:
+In addition, you will need to tell SEOpener the domain and name of your site.  You can do this by modifying the seopener.yml file that was copied to your config directory by the seopener:setup rake task:
 
-    Seo::Config.my_domain = 'transfs.com'
-    Seo::Config.my_site_name = 'TransFS'
+    my_domain: 'transfs.com'
+    my_site_name: 'TransFS'
+
 
 Finally, you will need to uncomment the routes defined in the plugin's config/routes.rb file, or copy them to your application's config.rb.  You may want to override these routes, and direct them to your own "secure" subclasses of the SEOpener controller:
 
@@ -87,9 +88,9 @@ To process your SEO query requests, it forks a background thread and uses a temp
 
 For proper background processing of your SEO data, you will need to install a background processing engine of some kind.  There are many different flavors, but the one that I have used and recommend is Workling (with Starling).  I wrote about our experience with Workling/Starling [here](http://transfs.com/devblog/2009/04/06/goodbye-backgroundrb-hello-workling-starling/).
 
-To hook up your own background processing engine, you will need to subclass the generic worker class in SEOpener, and provide your own glue code.  Take a look at the Seo::NaiveWorker class for a rough example of how to do this.  Once you have created your own worker subclass (which must reside in the Seo:: module namespace), then you can hook it up by specifying the class in your environment.rb config:
+To hook up your own background processing engine, you will need to subclass the generic worker class in SEOpener, and provide your own glue code.  Take a look at the Seo::NaiveWorker class for a rough example of how to do this.  Once you have created your own worker subclass (which must reside in the Seo:: module namespace), then you can hook it up by specifying the class in your seopener.yml config:
 
-    Seo::Config.background_worker = :my_custom_worker
+    background_worker:  :my_custom_worker
 
 For an example of using SEOpener with Workling, see the Seo::WorklingWorker class.  It is designed to work with an SeoWorker Workling class, that contains most of the updating logic from Seo::GenericWorker.
 
