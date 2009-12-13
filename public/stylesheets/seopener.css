@@ -2,6 +2,12 @@
 #seopener {
   font-family: Verdana, 'Helvetica Neu', Arial;
   font-size: 10px;
+  line-height: 14px;
+}
+
+#seopener td, #seopener th {
+  font-size: 10px;
+  line-height: 14px;
 }
 
 #seopener table {

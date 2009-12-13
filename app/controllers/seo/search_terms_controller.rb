@@ -156,21 +156,23 @@ class Seo::SearchTermsController < ApplicationController
   # RSS authentication method
   # Here we check that the random key param was passed in, as well as doing some basic auth
   AdminRssKey = 'secretrsskey' unless defined?(AdminRssKey)
-  def rss_authentication
-    if params[:key] != AdminRssKey
-      redirect_to '/'
-      return false
-    end
-
-    if user = authenticate_with_http_basic do |username, pass|
-        username=='rss' and pass=='rss-password'
+  unless method_defined?(:rss_authentication)
+    def rss_authentication
+      if params[:key] != AdminRssKey
+        redirect_to '/'
+        return false
       end
-    else
-      request_http_basic_authentication
-      return false
-    end
 
-    return true
+      if user = authenticate_with_http_basic do |username, pass|
+          username==Seo::Config.rss_username and pass==Seo::Config.rss_password
+        end
+      else
+        request_http_basic_authentication
+        return false
+      end
+
+      return true
+    end
   end
 
 end

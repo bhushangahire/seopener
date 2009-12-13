@@ -4,9 +4,9 @@ xml.instruct! :xml, :version=>"1.0"
 xml.feed "xmlns" => "http://www.w3.org/2005/Atom" do |feed|
 
 	feed.title	 "#{request.host} #{RAILS_ENV} - SEO Tracker"
-	feed.link		 "rel" => "self", "href" => url_for(:only_path => false, :controller => 'seo/search_terms', :action => 'index', :format=>:atom)
-	feed.link		 "rel" => "alternate", "href" => url_for(:only_path => false, :controller => 'seo/search_terms')
-	feed.id			 url_for(:only_path => false, :controller => 'seo/search_terms')
+	feed.link		 "rel" => "self", "href" => seo_search_terms_url(:format=>:atom)
+	feed.link		 "rel" => "alternate", "href" => seo_search_terms_url
+	feed.id			 seo_search_terms_url
 	feed.author	 { xml.name Seo::Config.my_site_name }
 	if @seo_search_terms.any?
 		most_recent_update = @seo_search_terms.sort {|a,b| b.updated_at <=> a.updated_at}.first

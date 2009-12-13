@@ -64,9 +64,19 @@ module Seo::SearchTermsHelper
     end
   end
 
+  def rss_css
+    css = "<style>"
+    css += File.open(File.join(Rails.public_path,'stylesheets','seopener.css')).read
+    css += "</style>"
+    css
+  end
+
   def seo_rss_html
-    html = admin_css
+    html = rss_css
+    html += "<html><body id='seopener'>"
     html += render :partial=>'seo/search_terms/seo_search_term_table.html.erb'
+    html += "</body></html>"
+    html
   end
 
 end
