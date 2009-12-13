@@ -12,6 +12,8 @@
 
 #seopener th {
   border-bottom: 1px solid #888;
+  font-weight: bold;
+  text-align: center;
 }
 
 #seopener .descriptions th {
@@ -29,7 +31,7 @@
 }
 
 #seopener .small {
-  font-size: 0.85em;
+  font-size: 0.75em;
   line-height: 1.2em;
   color: #ACACAC;
 }
