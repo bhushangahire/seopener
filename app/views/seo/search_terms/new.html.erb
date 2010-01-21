@@ -21,7 +21,7 @@
 	<p><i> - OR - </i></p>
 
 	<h2>Upload a CSV file with multiple terms (the file should have one term per line)</h2>
-	<% form_tag seo_search_terms_path, :multipart => true do |f| %>
+	<% form_tag seo_search_terms_path, :multipart => true do %>
 		<%= file_field_tag 'search_term_csv_file' %><br />
 		<%= submit_tag 'Upload this CSV' %>
 	<% end %>
